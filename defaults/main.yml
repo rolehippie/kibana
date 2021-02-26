@@ -1,0 +1,25 @@
+# Standards: 1.2
+---
+# @var kibana_server_version:description: Version of Logstash that gets installed
+kibana_server_version: "7.8"
+
+# @var kibana_server_name:description: Name of the server
+kibana_server_name: "{{ ansible_hostname }}"
+
+# @var kibana_server_base_path:description: List of Elasticsearch server instances
+kibana_elasticsearch_hosts: []
+
+# @var kibana_server_base_path:description: When this setting's value is true Kibana uses the hostname specified in server host
+kibana_elasticsearch_preserve_host: False
+
+# @var kibana_group:description: Name of the group owning Kibana
+kibana_group: kibana
+
+# @var kibana_user:description: Name of the user owning Kibana
+kibana_user: kibana
+
+# @var kibana_repository:description: Dict of repositories matching the choosen version
+kibana_repository:
+  "7.8": "deb https://artifacts.elastic.co/packages/7.x/apt stable main"
+
+...

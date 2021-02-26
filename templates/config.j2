@@ -1,0 +1,9 @@
+server:
+  name: {{ kibana_server_name }}
+  port: 5601
+  host: 0.0.0.0
+
+elasticsearch:
+  preserveHost: {{ kibana_elasticsearch_preserve_host | lower }}
+  hosts:
+    {{ kibana_elasticsearch_hosts | to_nice_yaml(indent=2) | indent(width=4, indentfirst=False) }}

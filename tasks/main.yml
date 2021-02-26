@@ -1,0 +1,92 @@
+# Standards: 1.2
+---
+- name: Create required group
+  group:
+    name: "{{ kibana_group }}"
+    system: True
+    state: present
+  tags:
+    - kibana
+
+- name: Create required user
+  user:
+    name: "{{ kibana_user }}"
+    group: "{{ kibana_group }}"
+    password: "!"
+    shell: /usr/sbin/nologin
+    home: /var/lib/kibana
+    create_home: False
+    system: True
+    state: present
+  tags:
+    - kibana
+
+- name: Download repo key
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    id: 46095ACC8548582C1A2699A9D27D666CD88E42B4
+    state: present
+  tags:
+    - kibana
+
+- name: Add apt repository
+  apt_repository:
+    repo: "{{ kibana_repository[kibana_server_version] }}"
+    filename: kibana
+    update_cache: True
+    state: present
+  tags:
+    - kibana
+
+- name: Pin package version
+  copy:
+    content: |
+      Explantion: Pin added by kibana role
+      Package: kibana
+      Pin: version {{ kibana_server_version }}*
+      Pin-Priority: 1000
+    dest: /etc/apt/preferences.d/kibana
+  tags:
+    - kibana
+
+- name: Install required packages
+  loop:
+    - "kibana={{ kibana_server_version }}*"
+  package:
+    name: "{{ item }}"
+    state: present
+  tags:
+    - kibana
+
+- name: Write kibana config
+  notify:
+    - Restart kibana
+  template:
+    src: config.j2
+    dest: /etc/kibana/kibana.yml
+    owner: root
+    group: "{{ kibana_group }}"
+    mode: u=rw,g=rw,o=
+  tags:
+    - kibana
+
+- name: Write default config
+  notify:
+    - Restart kibana
+  template:
+    src: default.j2
+    dest: /etc/default/kibana
+  tags:
+    - kibana
+
+- name: Start kibana service
+  systemd:
+    name: kibana
+    state: started
+    daemon_reload: True
+    masked: False
+    enabled: True
+  tags:
+    - kibana
+
+...

@@ -1,0 +1,15 @@
+# Standards: 1.2
+---
+- name: Restart kibana
+  systemd:
+    name: kibana
+    state: restarted
+    daemon_reload: True
+
+- name: Reload kibana
+  systemd:
+    name: kibana
+    state: reloaded
+    daemon_reload: True
+
+...
