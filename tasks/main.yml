@@ -46,6 +46,9 @@
       Pin: version {{ kibana_server_version }}*
       Pin-Priority: 1000
     dest: /etc/apt/preferences.d/kibana
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
   tags:
     - kibana
 
@@ -76,6 +79,9 @@
   template:
     src: default.j2
     dest: /etc/default/kibana
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
   tags:
     - kibana
 
