@@ -20,7 +20,8 @@ Building and improving this Ansible role have been sponsored by my current and p
   - [kibana_elasticsearch_hosts](#kibana_elasticsearch_hosts)
   - [kibana_elasticsearch_preserve_host](#kibana_elasticsearch_preserve_host)
   - [kibana_group](#kibana_group)
-  - [kibana_repository](#kibana_repository)
+  - [kibana_keyring](#kibana_keyring)
+  - [kibana_major_version](#kibana_major_version)
   - [kibana_server_base_path](#kibana_server_base_path)
   - [kibana_server_name](#kibana_server_name)
   - [kibana_server_version](#kibana_server_version)
@@ -65,15 +66,24 @@ Name of the group owning Kibana
 kibana_group: kibana
 ```
 
-### kibana_repository
+### kibana_keyring
 
-Dict of repositories matching the choosen version
+Path for the repository keyring
 
 #### Default value
 
 ```YAML
-kibana_repository:
-  '7.8': deb https://artifacts.elastic.co/packages/7.x/apt stable main
+kibana_keyring: /usr/share/keyrings/elastic-archive-keyring.gpg
+```
+
+### kibana_major_version
+
+Major version built via server version variable
+
+#### Default value
+
+```YAML
+kibana_major_version: "{{ kibana_server_version.split('.')[0] }}"
 ```
 
 ### kibana_server_base_path
@@ -92,7 +102,7 @@ kibana_server_name: '{{ ansible_hostname }}'
 
 ### kibana_server_version
 
-Version of Logstash that gets installed
+Version of Kibana that gets installed
 
 #### Default value
 
