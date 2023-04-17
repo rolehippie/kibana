@@ -1,5 +1,37 @@
 # Standards: 1.2
 ---
+- name: Remove legacy key
+  apt_key:
+    id: 46095ACC8548582C1A2699A9D27D666CD88E42B4
+    state: absent
+  tags:
+    - kibana
+
+- name: Remove legacy repo
+  apt_repository:
+    repo: "deb https://artifacts.elastic.co/packages/{{ kibana_major_version }}.x/apt stable main"
+    filename: elastic
+    update_cache: False
+    state: absent
+  tags:
+    - kibana
+
+- name: Download repo key
+  shell:
+    cmd: "curl -sSL 'https://artifacts.elastic.co/GPG-KEY-elasticsearch' | gpg --dearmor --output {{ kibana_keyring }}"
+    creates: "{{ kibana_keyring }}"
+  tags:
+    - kibana
+
+- name: Add apt repository
+  apt_repository:
+    repo: "deb [signed-by={{ kibana_keyring }}] https://artifacts.elastic.co/packages/{{ kibana_major_version }}.x/apt stable main"
+    filename: elastic
+    update_cache: True
+    state: present
+  tags:
+    - kibana
+
 - name: Create required group
   group:
     name: "{{ kibana_group }}"
@@ -17,23 +49,6 @@
     home: /var/lib/kibana
     create_home: False
     system: True
-    state: present
-  tags:
-    - kibana
-
-- name: Download repo key
-  apt_key:
-    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
-    id: 46095ACC8548582C1A2699A9D27D666CD88E42B4
-    state: present
-  tags:
-    - kibana
-
-- name: Add apt repository
-  apt_repository:
-    repo: "{{ kibana_repository[kibana_server_version] }}"
-    filename: kibana
-    update_cache: True
     state: present
   tags:
     - kibana

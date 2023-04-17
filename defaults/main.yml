@@ -1,7 +1,10 @@
 # Standards: 1.2
 ---
-# @var kibana_server_version:description: Version of Logstash that gets installed
+# @var kibana_server_version:description: Version of Kibana that gets installed
 kibana_server_version: "7.8"
+
+# @var kibana_major_version:description: Major version built via server version variable
+kibana_major_version: "{{ kibana_server_version.split('.')[0] }}"
 
 # @var kibana_server_name:description: Name of the server
 kibana_server_name: "{{ ansible_hostname }}"
@@ -18,8 +21,7 @@ kibana_group: kibana
 # @var kibana_user:description: Name of the user owning Kibana
 kibana_user: kibana
 
-# @var kibana_repository:description: Dict of repositories matching the choosen version
-kibana_repository:
-  "7.8": "deb https://artifacts.elastic.co/packages/7.x/apt stable main"
+# @var kibana_keyring:description: Path for the repository keyring
+kibana_keyring: /usr/share/keyrings/elastic-archive-keyring.gpg
 
 ...
