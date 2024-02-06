@@ -44,7 +44,7 @@
     name: "{{ kibana_user }}"
     group: "{{ kibana_group }}"
     password: "!"
-    ansible.builtin.shell: /usr/sbin/nologin
+    shell: /usr/sbin/nologin
     home: /var/lib/kibana
     create_home: False
     system: True
