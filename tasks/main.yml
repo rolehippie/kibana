@@ -1,13 +1,13 @@
 ---
 - name: Remove legacy key
-  apt_key:
+  ansible.builtin.apt_key:
     id: 46095ACC8548582C1A2699A9D27D666CD88E42B4
     state: absent
   tags:
     - kibana
 
 - name: Remove legacy repo
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: "deb https://artifacts.elastic.co/packages/{{ kibana_major_version }}.x/apt stable main"
     filename: elastic
     update_cache: False
@@ -16,14 +16,14 @@
     - kibana
 
 - name: Download repo key
-  shell:
+  ansible.builtin.shell:
     cmd: "curl -sSL 'https://artifacts.elastic.co/GPG-KEY-elasticsearch' | gpg --dearmor --output {{ kibana_keyring }}"
     creates: "{{ kibana_keyring }}"
   tags:
     - kibana
 
 - name: Add apt repository
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: "deb [signed-by={{ kibana_keyring }}] https://artifacts.elastic.co/packages/{{ kibana_major_version }}.x/apt stable main"
     filename: elastic
     update_cache: True
@@ -32,7 +32,7 @@
     - kibana
 
 - name: Create required group
-  group:
+  ansible.builtin.group:
     name: "{{ kibana_group }}"
     system: True
     state: present
@@ -40,11 +40,11 @@
     - kibana
 
 - name: Create required user
-  user:
+  ansible.builtin.user:
     name: "{{ kibana_user }}"
     group: "{{ kibana_group }}"
     password: "!"
-    shell: /usr/sbin/nologin
+    ansible.builtin.shell: /usr/sbin/nologin
     home: /var/lib/kibana
     create_home: False
     system: True
@@ -53,7 +53,7 @@
     - kibana
 
 - name: Pin package version
-  copy:
+  ansible.builtin.copy:
     content: |
       Explantion: Pin added by kibana role
       Package: kibana
@@ -69,7 +69,7 @@
 - name: Install required packages
   loop:
     - "kibana={{ kibana_server_version }}*"
-  package:
+  ansible.builtin.package:
     name: "{{ item }}"
     state: present
   tags:
@@ -78,7 +78,7 @@
 - name: Write kibana config
   notify:
     - Restart kibana
-  template:
+  ansible.builtin.template:
     src: config.j2
     dest: /etc/kibana/kibana.yml
     owner: root
@@ -90,7 +90,7 @@
 - name: Write default config
   notify:
     - Restart kibana
-  template:
+  ansible.builtin.template:
     src: default.j2
     dest: /etc/default/kibana
     owner: root
@@ -100,7 +100,7 @@
     - kibana
 
 - name: Start kibana service
-  systemd:
+  ansible.builtin.systemd:
     name: kibana
     state: started
     daemon_reload: True
