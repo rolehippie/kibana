@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.0.0](https://github.com/rolehippie/kibana/compare/v1.1.0...v2.0.0) (2024-02-12)
+
+
+### Features
+
+* drop support for ubuntu 18.04 ([1dd269d](https://github.com/rolehippie/kibana/commit/1dd269dd5a58958adc007c45bdccafcdf2681c80))
+* used full qualified collection names ([6ad4b26](https://github.com/rolehippie/kibana/commit/6ad4b263edc34105431e260c24fa18a1b061e277))
+
+
+### Bugfixes
+
+* use right attribute for user shell ([9cdd943](https://github.com/rolehippie/kibana/commit/9cdd9437fdb9d55395a092fa8853abeda854de00))
+
 ## [1.1.0](https://github.com/rolehippie/kibana/compare/v1.0.0...v1.1.0) (2023-04-17)
 
 
