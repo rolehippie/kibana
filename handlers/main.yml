@@ -3,12 +3,12 @@
   ansible.builtin.systemd:
     name: kibana
     state: restarted
-    daemon_reload: True
+    daemon_reload: true
 
 - name: Reload kibana
   ansible.builtin.systemd:
     name: kibana
     state: reloaded
-    daemon_reload: True
+    daemon_reload: true
 
 ...

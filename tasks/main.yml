@@ -10,7 +10,7 @@
   ansible.builtin.apt_repository:
     repo: "deb https://artifacts.elastic.co/packages/{{ kibana_major_version }}.x/apt stable main"
     filename: elastic
-    update_cache: False
+    update_cache: false
     state: absent
   tags:
     - kibana
@@ -26,7 +26,7 @@
   ansible.builtin.apt_repository:
     repo: "deb [signed-by={{ kibana_keyring }}] https://artifacts.elastic.co/packages/{{ kibana_major_version }}.x/apt stable main"
     filename: elastic
-    update_cache: True
+    update_cache: true
     state: present
   tags:
     - kibana
@@ -34,7 +34,7 @@
 - name: Create required group
   ansible.builtin.group:
     name: "{{ kibana_group }}"
-    system: True
+    system: true
     state: present
   tags:
     - kibana
@@ -46,8 +46,8 @@
     password: "!"
     shell: /usr/sbin/nologin
     home: /var/lib/kibana
-    create_home: False
-    system: True
+    create_home: false
+    system: true
     state: present
   tags:
     - kibana
@@ -103,9 +103,9 @@
   ansible.builtin.systemd:
     name: kibana
     state: started
-    daemon_reload: True
-    masked: False
-    enabled: True
+    daemon_reload: true
+    masked: false
+    enabled: true
   tags:
     - kibana
 
