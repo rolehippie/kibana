@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/rolehippie/kibana/compare/v2.0.0...v2.1.0) (2025-11-17)
+
+
+### Features
+
+* apply new repo structure and update linting ([487bd63](https://github.com/rolehippie/kibana/commit/487bd633bf343fb8f46b52527ceaff8e131993fd))
+
 ## [2.0.0](https://github.com/rolehippie/kibana/compare/v1.1.0...v2.0.0) (2024-02-12)
 
 
