@@ -1,6 +1,6 @@
 ---
 # @var kibana_server_version:description: Version of Kibana that gets installed
-kibana_server_version: "7.17"
+kibana_server_version: "9.5"
 
 # @var kibana_major_version:description: Major version built via server version variable
 kibana_major_version: "{{ kibana_server_version.split('.')[0] }}"
