@@ -1,11 +1,4 @@
 ---
-- name: Remove legacy key
-  ansible.builtin.apt_key:
-    id: 46095ACC8548582C1A2699A9D27D666CD88E42B4
-    state: absent
-  tags:
-    - kibana
-
 - name: Remove legacy repo
   ansible.builtin.apt_repository:
     repo: "deb https://artifacts.elastic.co/packages/{{ kibana_major_version }}.x/apt stable main"
@@ -15,10 +8,37 @@
   tags:
     - kibana
 
+- name: Remove legacy key
+  ansible.builtin.apt_key:
+    id: 46095ACC8548582C1A2699A9D27D666CD88E42B4
+    state: absent
+  tags:
+    - kibana
+
 - name: Download repo key
-  ansible.builtin.shell:
-    cmd: "curl -sSL 'https://artifacts.elastic.co/GPG-KEY-elasticsearch' | gpg --dearmor --output {{ kibana_keyring }}"
-    creates: "{{ kibana_keyring }}"
+  register: kibana_key_download
+  ansible.builtin.get_url:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    dest: "{{ kibana_keyring }}.asc"
+    mode: u=rw,g=r,o=r
+    force: true
+  tags:
+    - kibana
+
+- name: Check repo key
+  register: kibana_key_status
+  ansible.builtin.stat:
+    path: "{{ kibana_keyring }}"
+  tags:
+    - kibana
+
+- name: Dearmor repo key
+  when:
+    - kibana_key_download.changed or not kibana_key_status.stat.exists
+  register: kibana_key_convert
+  changed_when: kibana_key_convert.rc == 0
+  ansible.builtin.command:
+    cmd: "gpg --batch --yes --dearmor -o {{ kibana_keyring }} {{ kibana_keyring }}.asc"
   tags:
     - kibana
 

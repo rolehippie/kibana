@@ -96,7 +96,7 @@ Name of the server
 #### Default value
 
 ```YAML
-kibana_server_name: '{{ ansible_hostname }}'
+kibana_server_name: '{{ ansible_facts['hostname'] }}'
 ```
 
 ### kibana_server_version

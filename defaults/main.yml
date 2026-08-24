@@ -1,12 +1,12 @@
 ---
 # @var kibana_server_version:description: Version of Kibana that gets installed
-kibana_server_version: "7.8"
+kibana_server_version: "7.17"
 
 # @var kibana_major_version:description: Major version built via server version variable
 kibana_major_version: "{{ kibana_server_version.split('.')[0] }}"
 
 # @var kibana_server_name:description: Name of the server
-kibana_server_name: "{{ ansible_hostname }}"
+kibana_server_name: "{{ ansible_facts['hostname'] }}"
 
 # @var kibana_server_base_path:description: List of Elasticsearch server instances
 kibana_elasticsearch_hosts: []
